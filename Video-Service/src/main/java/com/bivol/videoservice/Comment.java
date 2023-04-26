@@ -15,10 +15,10 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(Long commentId, Long userId, String commentText, LocalDateTime uploadTime) {
-        this.id = new CommentId(commentId, userId);
+    public Comment(Long userId, String commentText) {
+        this.id = new CommentId(userId);
         this.commentText = commentText;
-        this.uploadTime = uploadTime;
+        this.uploadTime = LocalDateTime.now();
     }
 
     public CommentId getId() {

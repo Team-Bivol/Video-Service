@@ -12,11 +12,14 @@ import java.util.List;
 public class VideoController {
 
     private final VideoService videoService;
+    private final VideoInteractionsProducer producer;
 
     @Autowired
-    public VideoController(VideoService videoService) {
+    public VideoController(VideoService videoService, VideoInteractionsProducer producer) {
         this.videoService = videoService;
+        this.producer = producer;
     }
+
 
     @PostMapping
     public ResponseEntity<Video> uploadVideo(@RequestBody Video video) {
@@ -46,23 +49,23 @@ public class VideoController {
     }
 
     @PostMapping("/{id}/comments")
-    public ResponseEntity<Comment> addComment(@PathVariable Long id, @RequestBody Comment comment) {
-        Video video = videoService.getVideoById(id);
-        if (video == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        Comment savedComment = videoService.addComment(video, comment);
+    public ResponseEntity<Comment> addComment(@PathVariable Long id,
+                                              @RequestBody Comment comment) {
+//        Comment comment = new Comment(userId, commentText);
+        Comment savedComment = videoService.addComment(id, comment);
         return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
     }
 
     @PostMapping("/{id}/likes")
     public ResponseEntity<Long> addLike(@PathVariable Long id, @RequestBody Long userId) {
         Video video = videoService.getVideoById(id);
+        String email = videoService.getUserEmailFromSession();
         if (video == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Long>(HttpStatus.NOT_FOUND);
         }
         Long savedLike = videoService.addLike(video, userId);
-        return new ResponseEntity<>(savedLike, HttpStatus.CREATED);
+        producer.sendVideoInteractions(email);
+        return new ResponseEntity<Long>(savedLike, HttpStatus.CREATED);
     }
 
 }

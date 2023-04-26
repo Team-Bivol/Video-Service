@@ -1,6 +1,6 @@
 package com.bivol.videoservice;
 
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
@@ -9,14 +9,15 @@ public class CommentId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
     private Long userId;
 
     public CommentId() {}
 
-    public CommentId(Long commentId, Long userId) {
-        this.commentId = commentId;
+    public CommentId(Long userId) {
         this.userId = userId;
     }
 
@@ -36,5 +37,4 @@ public class CommentId implements Serializable {
         this.userId = userId;
     }
 
-    // Implement equals() and hashCode() methods
 }

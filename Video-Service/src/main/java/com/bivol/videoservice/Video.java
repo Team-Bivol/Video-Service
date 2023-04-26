@@ -12,11 +12,10 @@ public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String uploaderId;
+    private String uploaderEmail;
     private String title;
-
     private String description;
-
     private String url;
 
     @ElementCollection
@@ -31,8 +30,10 @@ public class Video {
     public Video() {
     }
 
-    public Video(Long id, String title, String description, String url, List<String> tags, Set<Long> likes, List<Comment> comments) {
+    public Video(Long id, String uploaderId, String uploaderEmail, String title, String description, String url, List<String> tags, Set<Long> likes, List<Comment> comments) {
         this.id = id;
+        this.uploaderId = uploaderId;
+        this.uploaderEmail = uploaderEmail;
         this.title = title;
         this.description = description;
         this.url = url;
@@ -47,6 +48,22 @@ public class Video {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUploaderId() {
+        return uploaderId;
+    }
+
+    public void setUploaderId(String uploaderId) {
+        this.uploaderId = uploaderId;
+    }
+
+    public String getUploaderEmail() {
+        return uploaderEmail;
+    }
+
+    public void setUploaderEmail(String uploaderEmail) {
+        this.uploaderEmail = uploaderEmail;
     }
 
     public String getTitle() {
@@ -93,17 +110,27 @@ public class Video {
         return comments;
     }
 
-    public Comment addComment(Comment comment){
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Comment addComment(Comment comment) {
         this.comments.add(comment);
         return comment;
     }
 
-    public Long addLike(Long userId){
+    public Long addLike(Long userId) {
         this.likes.add(userId);
         return userId;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public Comment removeComment(Comment comment) {
+        this.comments.remove(comment);
+        return comment;
+    }
+
+    public Long removeLike(Long userId) {
+        this.likes.remove(userId);
+        return userId;
     }
 }
