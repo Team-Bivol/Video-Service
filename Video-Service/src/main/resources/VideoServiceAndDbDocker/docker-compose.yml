@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  videos-db:
+    build: ./DATABASE/
+    image: mysql:latest
+    volumes:
+      - ./DATABASE/videos.sql:/docker-entrypoint-initdb.d/videos.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: videos
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3305:3306"
+    networks:
+      - app-network
+
+  videos-app:
+    build: ./VideosApp/
+    image: videos-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://videos-db:3306/videos
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_DATASOURCE_DRIVER-CLASS-NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      - "8000:8080"
+    depends_on:
+      - videos-db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

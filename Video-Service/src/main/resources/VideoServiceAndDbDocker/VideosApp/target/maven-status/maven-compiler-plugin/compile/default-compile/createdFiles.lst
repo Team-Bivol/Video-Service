@@ -1,0 +1,11 @@
+com\bivol\videoservice\CommentRepository.class
+com\bivol\videoservice\VideoInteractions.class
+com\bivol\videoservice\Comment.class
+com\bivol\videoservice\VideoServiceApplication.class
+com\bivol\videoservice\Video.class
+com\bivol\videoservice\CommentId.class
+com\bivol\videoservice\VideoManagementService.class
+com\bivol\videoservice\VideoController.class
+com\bivol\videoservice\VideoService.class
+com\bivol\videoservice\VideoRepository.class
+com\bivol\videoservice\VideoInteractionsProducer.class
